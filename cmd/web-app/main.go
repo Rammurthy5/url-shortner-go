@@ -9,11 +9,9 @@ import (
 )
 
 func main() {
-	configData, err := config.Load()
-	if err != nil {
-		log.Println(err)
-	}
+	cfg, logger, db := config.InitDependencies()
+	logger.Info("Application starts..")
 	http.HandleFunc("/", controllers.ShowHomePage)
 	http.HandleFunc("/shorten", controllers.ShortenHandle)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", configData.HttpConfig.Port), nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", cfg.HttpConfig.Port), nil))
 }
