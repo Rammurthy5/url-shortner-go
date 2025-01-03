@@ -9,10 +9,10 @@ import (
 
 type (
 	Config struct {
-		HttpConfig HttpConfig `mapstructure:"http"`
+		HTTPConfig HTTPConfig `mapstructure:"http"`
 		DBConfig   DBConfig   `mapstructure:"db"`
 	}
-	HttpConfig struct {
+	HTTPConfig struct {
 		Port string `mapstructure:"port"`
 	}
 	DBConfig struct {
@@ -37,12 +37,12 @@ func Load() (Config, error) {
 	viper.SetConfigFile("config/config.yaml")
 	viper.AutomaticEnv() // Automatically override values with environment variables
 	if err := viper.ReadInConfig(); err != nil {
-		log.Fatal(fmt.Errorf("Fatal error config file: %w \n", err))
+		log.Fatal(fmt.Errorf("fatal error config file: %w ", err))
 	}
 
 	envConfig := viper.Sub(viper.GetString("env"))
 	if err := envConfig.Unmarshal(&c); err != nil {
-		log.Fatal(fmt.Errorf("Fatal error unmarshaling config file: %w \n", err))
+		log.Fatal(fmt.Errorf("fatal error unmarshaling config file: %w ", err))
 	}
 	return c, nil
 }

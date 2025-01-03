@@ -22,10 +22,10 @@ func ShortenHandle(w http.ResponseWriter, r *http.Request) {
 		url = "http://" + url
 	}
 
-	shortUrl := urls.Shorten(url)
+	shortURL := urls.Shorten(url)
 
 	data := map[string]string{
-		"ShortURL": shortUrl,
+		"ShortURL": shortURL,
 	}
 
 	t, err := template.ParseFiles("internal/views/shorten.html")

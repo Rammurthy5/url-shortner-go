@@ -7,12 +7,12 @@ import (
 )
 
 var (
-	onceDb  sync.Once
+	onceDB  sync.Once
 	_dbInst *sql.DB
 )
 
 func GetDB(cfg Config) *sql.DB {
-	onceDb.Do(func() {
+	onceDB.Do(func() {
 		_, err := sql.Open("postgres",
 			fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=mydatabase",
 				cfg.DBConfig.Host, cfg.DBConfig.Port, cfg.DBConfig.Username, cfg.DBConfig.Password))

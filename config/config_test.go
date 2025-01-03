@@ -11,5 +11,5 @@ func TestLoadConfig(t *testing.T) {
 	c, err := Load()
 	require.NoError(t, err)
 	require.NotNil(t, c)
-	assert.Equal(t, "3200", c.HttpConfig.Port)
+	assert.Equal(t, "3200", c.HTTPConfig.Port)
 }
