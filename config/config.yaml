@@ -2,9 +2,27 @@ env: ""
 dev:
   http:
     port: "3200"
+  db:
+    host: ""
+    port: ""
+    username: ""
+    password: ""
+    dbname: ""
 test:
   http:
     port: "3201"
+  db:
+    host: ""
+    port: ""
+    username: ""
+    password: ""
+    dbname: ""
 prod:
   http:
     port: "3203"
+  db:
+    host: ""
+    port: ""
+    username: ""
+    password: ""
+    dbname: ""

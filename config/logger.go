@@ -13,13 +13,16 @@ var (
 
 func GetLogger() *zap.Logger {
 	once.Do(func() {
-		baseLogger := zap.Must(zap.NewProduction())
-		defer func(logger *zap.Logger) {
-			err := logger.Sync()
-			if err != nil {
-				log.Fatal("Logger failed to sync", zap.Error(err))
-			}
-		}(baseLogger)
+		_logger = zap.Must(zap.NewProduction())
 	})
 	return _logger
+}
+
+func ShutdownLogger() {
+	if _logger != nil {
+		err := _logger.Sync()
+		if err != nil {
+			log.Printf("Logger failed to sync: %v", err)
+		}
+	}
 }

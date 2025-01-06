@@ -16,8 +16,11 @@ func GetDB(cfg Config) *pgx.Conn {
 
 	onceDB.Do(func() {
 		ctx := context.Background()
-		conn, err := pgx.Connect(ctx, fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=disable",
-			cfg.DBConfig.Username, cfg.DBConfig.Password, cfg.DBConfig.Host, cfg.DBConfig.Port, cfg.DBConfig.Database))
+		conn_string := fmt.Sprintf("postgresql://%s:%s@%s:%s/%s?sslmode=disable",
+			cfg.DBConfig.Username, cfg.DBConfig.Password, cfg.DBConfig.Host, cfg.DBConfig.Port, cfg.DBConfig.Database)
+		fmt.Println(conn_string)
+		conn, err := pgx.Connect(ctx, conn_string)
+		//conn, err := pgx.Connect(ctx, "")
 		if err != nil {
 			panic(fmt.Sprintf("Database failed to connect %s", err))
 		}

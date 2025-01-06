@@ -18,7 +18,8 @@ func Shorten(url string) string {
 func FetchShortURL(dbInst *urls_mapping.Queries, url string) string {
 	shortUrl, err := dbInst.GetUrl(context.Background(), url)
 	if err != nil {
-		return fmt.Sprintf("error while fetching short url: %v", err)
+		fmt.Sprintf("error while fetching short url: %v", err)
+		return ""
 	}
 	return shortUrl.ShortUrl
 }

@@ -32,6 +32,9 @@ func (c *ShortenController) ServeHandle(w http.ResponseWriter, r *http.Request) 
 		url = "https://" + url
 	}
 	shortURL := utils.FetchShortURL(c.Db, url)
+	if shortURL != "" {
+		_log.Info("Url fetched from DB")
+	}
 	if shortURL == "" {
 		shortURL = utils.Shorten(url)
 		err := utils.StoreShortURL(c.Db, url, shortURL)

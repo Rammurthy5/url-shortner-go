@@ -13,8 +13,10 @@ func main() {
 	cfg, logger, db := config.InitDependencies()
 	logger.Info("Application starts..")
 	dbInst := urls_mapping.New(db)
+	defer config.ShutdownLogger()
+	defer config.CloseDB()
+
 	baseController := controllers.BaseController{Cfg: cfg, Log: logger, Db: dbInst}
-	defer config.CloseDB() // gracefully close the db connection
 
 	homeController := controllers.NewHomeController(&baseController)
 	http.HandleFunc("/", homeController.ServeHandle)

@@ -5,6 +5,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 	"log"
+	"strings"
 )
 
 type (
@@ -20,27 +21,32 @@ type (
 		Port     string `mapstructure:"port"`
 		Username string `mapstructure:"username"`
 		Password string `mapstructure:"password"`
-		Database string `mapstructure:"database"`
+		Database string `mapstructure:"dbname"`
 	}
 )
 
 func Load() (Config, error) {
-	err := godotenv.Load("config/.env")
+	err := godotenv.Load()
 	if err != nil {
 		log.Fatal(fmt.Println("Error loading .env file:", err))
 	}
 	var c Config
-	//viper.AddConfigPath(".")
 	viper.AddConfigPath("./config")
-	//viper.AddConfigPath("../config/")
-	//viper.AddConfigPath("../../config/")
 	viper.SetConfigFile("config/config.yaml")
+	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv() // Automatically override values with environment variables
+	env := viper.GetString("env")
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatal(fmt.Errorf("fatal error config file: %w ", err))
 	}
 
-	envConfig := viper.Sub(viper.GetString("env"))
+	envConfig := viper.Sub(env)
+	envConfig.BindEnv("dev.db.host", "host")
+	envConfig.BindEnv("dev.db.port", "port")
+	envConfig.BindEnv("dev.db.username", "username")
+	envConfig.BindEnv("dev.db.password", "password")
+	envConfig.BindEnv("dev.db.dbname", "dbname")
+
 	if err := envConfig.Unmarshal(&c); err != nil {
 		log.Fatal(fmt.Errorf("fatal error unmarshaling config file: %w ", err))
 	}
