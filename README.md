@@ -10,6 +10,7 @@ production-ready standards followed for:
 4. Logging via zap.
 5. golang-migrate for db migrations.
 6. sqlc and pgx for database interaction.
+7. github actions cicd pipeline. pre-commit webhooks. [To-Do]
 
 
 # Migrate commands
@@ -23,3 +24,6 @@ make migrate_fix
 
 ## to run tests
 make test
+
+## to audit
+make audit

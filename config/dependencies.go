@@ -1,11 +1,11 @@
 package config
 
 import (
-	"database/sql"
+	"github.com/jackc/pgx/v5"
 	"go.uber.org/zap"
 )
 
-func InitDependencies() (Config, *zap.Logger, *sql.DB) {
+func InitDependencies() (Config, *zap.Logger, *pgx.Conn) {
 	config, err := Load()
 	if err != nil {
 		panic(err)

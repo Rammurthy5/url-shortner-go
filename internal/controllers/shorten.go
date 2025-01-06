@@ -1,13 +1,23 @@
 package controllers
 
 import (
-	"github.com/Rammurthy5/url-shortner-go/internal/urls"
+	"fmt"
+	"github.com/Rammurthy5/url-shortner-go/internal/utils"
 	"html/template"
 	"net/http"
 	"strings"
 )
 
-func ShortenHandle(w http.ResponseWriter, r *http.Request) {
+type ShortenController struct {
+	*BaseController
+}
+
+func NewShortenController(base *BaseController) *ShortenController {
+	return &ShortenController{BaseController: base}
+}
+
+func (c *ShortenController) ServeHandle(w http.ResponseWriter, r *http.Request) {
+	_log := c.Log.Named("shortenController")
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -19,10 +29,16 @@ func ShortenHandle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
-		url = "http://" + url
+		url = "https://" + url
 	}
-
-	shortURL := urls.Shorten(url)
+	shortURL := utils.FetchShortURL(c.Db, url)
+	if shortURL == "" {
+		shortURL = utils.Shorten(url)
+		err := utils.StoreShortURL(c.Db, url, shortURL)
+		if err != nil {
+			_log.Error(fmt.Sprintf("URL store to database has failed %s", err))
+		}
+	}
 
 	data := map[string]string{
 		"ShortURL": shortURL,
