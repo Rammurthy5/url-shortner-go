@@ -13,8 +13,15 @@ script:
 deploy:
   provider: releases
   api_key:
-    secure: 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
+    secure: ""
   file: "bin/url-shortener"
   skip_cleanup: true
   on:
     tags: true
+
+notifications:
+  email:
+    recipients:
+      - rammurthys@icloud.com
+    on_success: always
+    on_failure: always
