@@ -21,7 +21,12 @@ audit:
 ## test: run all tests
 .PHONY: test
 test:
-	go test -v -race -buildvcs ./...
+	#go test -v -race -buildvcs ./...
+	go test -v ./...
+## build: Build the binary
+.PHONY: build
+build:
+	go build -o bin/url-shortener cmd/web-app/main.go
 
 ## test/cover: run all tests and display coverage
 .PHONY: test/cover

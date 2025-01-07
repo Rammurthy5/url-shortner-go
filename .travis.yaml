@@ -1,0 +1,20 @@
+language: go
+go:
+  - "1.23.4"
+go_import_path: "github.com/Rammurthy5"
+
+# Build and test the application
+script:
+  - make audit
+  - make test
+  - make build
+
+# Deployment section
+deploy:
+  provider: releases
+  api_key:
+    secure: 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
+  file: "bin/url-shortener"
+  skip_cleanup: true
+  on:
+    tags: true
