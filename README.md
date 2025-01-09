@@ -11,7 +11,7 @@ production-ready standards followed for:
 5. golang-migrate for db migrations.
 6. sqlc and pgx for database interaction.
 7. cicd pipeline.
-8. DBmock, Dependabot, pre-commit webhooks. [To-Do]
+more tests, Dependabot, pre-commit webhooks. [To-Do]
 
 
 # Migrate commands
