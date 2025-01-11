@@ -3,7 +3,6 @@ package controllers
 import (
 	"fmt"
 	"github.com/Rammurthy5/url-shortner-go/internal/utils"
-	"github.com/Rammurthy5/url-shortner-go/internal/validators"
 	"github.com/go-playground/form"
 	"github.com/go-playground/validator/v10"
 	"html/template"
@@ -45,13 +44,7 @@ func (c *ShortenController) ServeHandle(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, "Failed to decode form", http.StatusBadRequest)
 		return
 	}
-
-	// Validate the URL
-	if err := validators.ValidateURL(req.URL); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
+	
 	// Validate the struct using go-playground/validator
 	validate := validator.New()
 	if err := validate.Struct(req); err != nil {
