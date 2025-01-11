@@ -44,7 +44,7 @@ func (c *ShortenController) ServeHandle(w http.ResponseWriter, r *http.Request) 
 		http.Error(w, "Failed to decode form", http.StatusBadRequest)
 		return
 	}
-	
+
 	// Validate the struct using go-playground/validator
 	validate := validator.New()
 	if err := validate.Struct(req); err != nil {

@@ -10,11 +10,12 @@ import (
 )
 
 func main() {
-	cfg, logger, db := config.InitDependencies()
+	cfg, logger, db, midlware := config.InitDependencies()
 	logger.Info("Application starts..")
 	dbInst := urls_mapping.New(db)
 	defer config.ShutdownLogger()
-	defer config.CloseDB()
+	defer config.ShutDownDB()
+	defer config.ShutDownCache()
 
 	baseController := controllers.BaseController{Cfg: cfg, Log: logger, Db: dbInst}
 
@@ -22,7 +23,7 @@ func main() {
 	http.HandleFunc("/", homeController.ServeHandle)
 
 	shortenController := controllers.NewShortenController(&baseController)
-	http.HandleFunc("/shorten", shortenController.ServeHandle)
+	http.HandleFunc("/shorten", midlware.CheckIdempotency(shortenController.ServeHandle))
 
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", cfg.HTTPConfig.Port), nil))
 }

@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  redis:
+    image: 'redis:4-alpine'
+    command: redis-server --requirepass yourpassword
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis-data:/data
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+  app:
+    build: .
+    ports:
+      - "3200:3200"
+    environment:
+      - VIEWS_DIR=/app/internal/views
+    depends_on:
+      - postgres
+      - redis
+volumes:
+  redis-data:
+  postgres-db-volume:

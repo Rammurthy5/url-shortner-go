@@ -10,8 +10,9 @@ import (
 
 type (
 	Config struct {
-		HTTPConfig HTTPConfig `mapstructure:"http"`
-		DBConfig   DBConfig   `mapstructure:"db"`
+		HTTPConfig  HTTPConfig  `mapstructure:"http"`
+		DBConfig    DBConfig    `mapstructure:"db"`
+		CacheConfig CacheConfig `mapstructure:"cache"`
 	}
 	HTTPConfig struct {
 		Port string `mapstructure:"port"`
@@ -22,6 +23,13 @@ type (
 		Username string `mapstructure:"username"`
 		Password string `mapstructure:"password"`
 		Database string `mapstructure:"dbname"`
+	}
+	CacheConfig struct {
+		Host     string `mapstructure:"host"`
+		Port     string `mapstructure:"port"`
+		Username string `mapstructure:"uname"`
+		Password string `mapstructure:"password"`
+		Db       int    `mapstructure:"db"`
 	}
 )
 
@@ -41,11 +49,19 @@ func Load() (Config, error) {
 	}
 
 	envConfig := viper.Sub(env)
-	envConfig.BindEnv("dev.db.host", "host")
-	envConfig.BindEnv("dev.db.port", "port")
-	envConfig.BindEnv("dev.db.username", "username")
-	envConfig.BindEnv("dev.db.password", "password")
-	envConfig.BindEnv("dev.db.dbname", "dbname")
+	// db config bind
+	envConfig.BindEnv("db.host", "db_host")
+	envConfig.BindEnv("db.port", "db_port")
+	envConfig.BindEnv("db.username", "db_username")
+	envConfig.BindEnv("db.password", "db_password")
+	envConfig.BindEnv("db.dbname", "dbname")
+
+	// cache config bind
+	envConfig.BindEnv("cache.host", "cache_host")
+	envConfig.BindEnv("cache.port", "cache_port")
+	envConfig.BindEnv("cache.username", "cache_uname")
+	envConfig.BindEnv("cache.password", "cache_password")
+	envConfig.BindEnv("cache.db", "cache_db")
 
 	if err := envConfig.Unmarshal(&c); err != nil {
 		log.Fatal(fmt.Errorf("fatal error unmarshaling config file: %w ", err))

@@ -30,7 +30,7 @@ func GetDB(cfg Config) *pgx.Conn {
 }
 
 // CloseDB Function to gracefully close the DB connection
-func CloseDB() {
+func ShutDownDB() {
 	if _dbInst != nil {
 		ctx := context.Background()
 		_ = _dbInst.Close(ctx) // Handle the error gracefully

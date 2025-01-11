@@ -8,6 +8,12 @@ dev:
     username: ""
     password: ""
     dbname: ""
+  cache:
+    host: ""
+    port: ""
+    username: ""
+    password: ""
+    db: 0
 test:
   http:
     port: "3201"
@@ -17,6 +23,12 @@ test:
     username: ""
     password: ""
     dbname: ""
+  cache:
+    host: ""
+    port: ""
+    username: ""
+    password: ""
+    db: 0
 prod:
   http:
     port: "3203"
@@ -26,3 +38,9 @@ prod:
     username: ""
     password: ""
     dbname: ""
+  cache:
+    host: ""
+    port: ""
+    username: ""
+    password: ""
+    db: 0
