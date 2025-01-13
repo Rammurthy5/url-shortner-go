@@ -16,7 +16,8 @@
 
                     const response = await fetch('/shorten', {
                         method: 'POST',
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                        headers: {'Content-Type': 'application/x-www-form-urlencoded',
+                            'Idempotency-Key': 'some-unique-key'},
                         body: `url=${encodeURIComponent(url)}`
                     });
 

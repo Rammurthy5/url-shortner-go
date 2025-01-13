@@ -1,22 +1,5 @@
 version: '3.8'
 services:
-  redis:
-    image: 'redis:4-alpine'
-    command: redis-server --requirepass yourpassword
-    ports:
-      - '6379:6379'
-    volumes:
-      - redis-data:/data
-  postgres:
-    image: postgres:17-alpine
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=example
-      - POSTGRES_DB=postgres
-    ports:
-      - 5432:5432
-    volumes:
-      - postgres-db-volume:/var/lib/postgresql/data
   app:
     build: .
     ports:
@@ -26,6 +9,26 @@ services:
     depends_on:
       - postgres
       - redis
+
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${db_username}
+      POSTGRES_PASSWORD: ${db_password}
+      POSTGRES_DB: ${dbname}
+    ports:
+      - '${db_port}:${db_port}'
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+
+  redis:
+    image: 'redis:4-alpine'
+    command: redis-server --requirepass ${cache_password}
+    ports:
+      - '${cache_port}:${cache_port}'
+    volumes:
+      - redis-data:/data
+
 volumes:
-  redis-data:
   postgres-db-volume:
+  redis-data:

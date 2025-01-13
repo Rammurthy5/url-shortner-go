@@ -3,7 +3,6 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . ./
-RUN go build -o /app/cmd/web/main /app/cmd/web/main.go
-EXPOSE 8080
-ENV GIN_MODE=release
-CMD ["/app/cmd/web/main"]
+RUN go build -o /cmd/web-app/main /cmd/web-app/main.go
+EXPOSE 3200
+CMD ["/cmd/web-app/main"]

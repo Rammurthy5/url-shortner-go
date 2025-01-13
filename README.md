@@ -12,8 +12,8 @@ production-ready standards followed for:
 6. sqlc and pgx for database interaction.
 7. cicd pipeline.
 8. request validation.
-9. middlware for idempotency, and redis implementation.
-tests for middleware, dockerisation [in-progress]
+9. middlware for idempotency, and redis implementation. tests for middleware 
+dockerisation [in-progress]
 versioning, context, pagination, Dependabot, pre-commit webhooks. [To-Do]
 
 
