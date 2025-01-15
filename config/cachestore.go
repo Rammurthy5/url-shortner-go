@@ -1,7 +1,9 @@
 package config
 
 import (
+	"context"
 	"github.com/go-redis/redis/v8"
+	"log"
 	"sync"
 )
 
@@ -18,6 +20,10 @@ func GetCache(cfg Config) *redis.Client {
 			Password: cfg.CacheConfig.Password,
 			DB:       cfg.CacheConfig.Db,
 		})
+		_, err := redisClient.Ping(context.Background()).Result()
+		if err != nil {
+			log.Fatalf("Failed to connect to Redis: %v", err)
+		}
 		_cache = redisClient
 	})
 	return _cache

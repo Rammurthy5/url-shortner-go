@@ -12,8 +12,10 @@ production-ready standards followed for:
 6. sqlc and pgx for database interaction.
 7. cicd pipeline.
 8. request validation.
-9. middlware for idempotency, and redis implementation. tests for middleware 
-dockerisation [in-progress]
+9. middleware for idempotency, and redis implementation. 
+idempotency key will not allow duplicate requests before a logical request is processed (fail / success).
+every time the form is refreshed there is going to be a new idempotency key. added tests for middleware
+ dockerisation [in-progress]
 versioning, context, pagination, Dependabot, pre-commit webhooks. [To-Do]
 
 

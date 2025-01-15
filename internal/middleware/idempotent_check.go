@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-redis/redis/v8"
 	"log"
 	"net/http"
@@ -17,7 +18,7 @@ func (m *IdempotencyMiddleware) CheckIdempotency(next http.HandlerFunc) http.Han
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := context.Background()
 		idempotencyKey := r.Header.Get("Idempotency-Key")
-
+		fmt.Println(idempotencyKey)
 		if idempotencyKey == "" {
 			http.Error(w, "Missing Idempotency-Key header", http.StatusBadRequest)
 			return

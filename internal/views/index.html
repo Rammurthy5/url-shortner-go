@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Shortener</title>
     <script>
+        // Store the idempotency key at a higher scope for reuse across rapid submissions
+        let idempotencyKey = null;
+
+        // Function to generate a unique idempotency key
+        function generateIdempotencyKey() {
+            return 'idempotency-' + Math.random().toString(36).substring(2, 15) + '-' + Date.now();
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('shortenForm');
             const resultDiv = document.getElementById('result');
@@ -12,16 +20,38 @@
             if (form) {
                 form.addEventListener('submit', async function (event) {
                     event.preventDefault();
+
+                    // Generate the idempotency key only once per session or operation
+                    if (!idempotencyKey) {
+                        idempotencyKey = generateIdempotencyKey();
+                        console.log('Generated Idempotency Key:', idempotencyKey);
+                    }
+
                     const url = document.getElementById('urlInput').value;
 
-                    const response = await fetch('/shorten', {
-                        method: 'POST',
-                        headers: {'Content-Type': 'application/x-www-form-urlencoded',
-                            'Idempotency-Key': 'some-unique-key'},
-                        body: `url=${encodeURIComponent(url)}`
-                    });
+                    try {
+                        const response = await fetch('/shorten', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'Idempotency-Key': idempotencyKey, // Use the same key for all rapid submissions
+                            },
+                            body: `url=${encodeURIComponent(url)}`,
+                        });
 
-                    resultDiv.innerHTML = await response.text();
+                        if (response.ok) {
+                            resultDiv.innerHTML = `<p>Shortened URL: ${await response.text()}</p>`;
+                        } else {
+                            const error = await response.text();
+                            resultDiv.innerHTML = `<p>Error: ${error}</p>`;
+                        }
+                    } catch (err) {
+                        console.error('Request failed:', err);
+                        resultDiv.innerHTML = '<p>An error occurred while processing your request.</p>';
+                    } finally {
+                        // Reset the idempotency key after request is complete
+                        idempotencyKey = null;
+                    }
                 });
             }
         });
