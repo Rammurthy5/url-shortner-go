@@ -14,7 +14,7 @@ production-ready standards followed for:
 8. request validation.
 9. middleware for idempotency, and redis implementation. 
 idempotency key will not allow duplicate requests before a logical request is processed (fail / success).
-every time the form is refreshed there is going to be a new idempotency key. added tests for middleware
+every time the form is refreshed there is going to be a new idempotency key. added tests for middleware.
  dockerisation [in-progress]
 versioning, context, pagination, Dependabot, pre-commit webhooks. [To-Do]
 
