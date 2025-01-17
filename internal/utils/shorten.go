@@ -5,6 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+
 	urls_mapping "github.com/Rammurthy5/url-shortner-go/internal/db/sqlc"
 )
 
@@ -18,8 +19,7 @@ func Shorten(url string) string {
 func FetchShortURL(dbInst *urls_mapping.Queries, url string) string {
 	shortUrl, err := dbInst.GetUrl(context.Background(), url)
 	if err != nil {
-		fmt.Sprintf("error while fetching short url: %v", err)
-		return ""
+		return fmt.Sprintf("error while fetching short url: %v", err)
 	}
 	return shortUrl.ShortUrl
 }

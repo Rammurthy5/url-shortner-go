@@ -15,6 +15,7 @@ audit:
 	go mod verify
 	test -z "$(shell gofmt -l .)"
 	go vet ./...
+	golangci-lint run ./...
 	go run honnef.co/go/tools/cmd/staticcheck@latest -checks=all,-ST1000,-U1000 ./...
 	go run golang.org/x/vuln/cmd/govulncheck@latest ./...
 
@@ -23,6 +24,11 @@ audit:
 test:
 	#go test -v -race -buildvcs ./...
 	go test -v ./...
+
+## pre-commit: run pre-commit checks
+.PHONY: pre-commit
+pre-commit: audit
+
 ## build: Build the binary
 .PHONY: build
 build:

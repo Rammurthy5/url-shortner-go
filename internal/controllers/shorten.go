@@ -2,12 +2,13 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/Rammurthy5/url-shortner-go/internal/utils"
-	"github.com/go-playground/form"
-	"github.com/go-playground/validator/v10"
 	"html/template"
 	"net/http"
 	"strings"
+
+	"github.com/Rammurthy5/url-shortner-go/internal/utils"
+	"github.com/go-playground/form"
+	"github.com/go-playground/validator/v10"
 )
 
 // ShortenRequest is used to capture form data.
@@ -57,10 +58,7 @@ func (c *ShortenController) ServeHandle(w http.ResponseWriter, r *http.Request) 
 	}
 
 	shortURL := utils.FetchShortURL(c.Db, req.URL)
-	if shortURL != "" {
-		_log.Info("Url fetched from DB")
-	}
-	if shortURL == "" {
+	if strings.Contains(shortURL, "error while fetching short url") {
 		shortURL = utils.Shorten(req.URL)
 		err := utils.StoreShortURL(c.Db, req.URL, shortURL)
 		if err != nil {

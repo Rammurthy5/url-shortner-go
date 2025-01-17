@@ -2,12 +2,13 @@ package middleware
 
 import (
 	"context"
-	"github.com/go-redis/redismock/v8"
-	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
+
+	"github.com/go-redis/redismock/v8"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCheckIdempotency(t *testing.T) {
@@ -21,6 +22,7 @@ func TestCheckIdempotency(t *testing.T) {
 	// Define a sample handler to wrap with middleware
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
+		// nolint:errcheck
 		w.Write([]byte("Success"))
 	}
 

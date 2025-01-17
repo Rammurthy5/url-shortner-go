@@ -2,10 +2,11 @@ package config
 
 import (
 	"fmt"
-	"github.com/joho/godotenv"
-	"github.com/spf13/viper"
 	"log"
 	"strings"
+
+	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
 )
 
 type (
@@ -50,18 +51,44 @@ func Load() (Config, error) {
 
 	envConfig := viper.Sub(env)
 	// db config bind
-	envConfig.BindEnv("db.host", "db_host")
-	envConfig.BindEnv("db.port", "db_port")
-	envConfig.BindEnv("db.username", "db_username")
-	envConfig.BindEnv("db.password", "db_password")
-	envConfig.BindEnv("db.dbname", "dbname")
+	if err := envConfig.BindEnv("db.host", "db_host"); err != nil {
+		// Handle the error, e.g., log it or return an error
+		log.Printf("Failed to bind env variable db.host: %v", err)
+	}
+
+	if err := envConfig.BindEnv("db.port", "db_port"); err != nil {
+		log.Printf("Failed to bind env variable db.port: %v", err)
+	}
+
+	if err := envConfig.BindEnv("db.username", "db_username"); err != nil {
+		log.Printf("Failed to bind env variable db.username: %v", err)
+	}
+
+	if err := envConfig.BindEnv("db.password", "db_password"); err != nil {
+		log.Printf("Failed to bind env variable db.password: %v", err)
+	}
+
+	if err := envConfig.BindEnv("db.dbname", "db_dbname"); err != nil {
+		log.Printf("Failed to bind env variable db.dbname: %v", err)
+	}
+
+	if err := envConfig.BindEnv("cache.host", "cache_host"); err != nil {
+		log.Printf("Failed to bind env variable cache.host: %v", err)
+	}
 
 	// cache config bind
-	envConfig.BindEnv("cache.host", "cache_host")
-	envConfig.BindEnv("cache.port", "cache_port")
-	envConfig.BindEnv("cache.username", "cache_uname")
-	envConfig.BindEnv("cache.password", "cache_password")
-	envConfig.BindEnv("cache.db", "cache_db")
+	if err := envConfig.BindEnv("cache.port", "cache_port"); err != nil {
+		log.Printf("Failed to bind env variable cache.port: %v", err)
+	}
+	if err := envConfig.BindEnv("cache.username", "cache_uname"); err != nil {
+		log.Printf("Failed to bind env variable cache.username: %v", err)
+	}
+	if err := envConfig.BindEnv("cache.password", "cache_password"); err != nil {
+		log.Printf("Failed to bind env variable cache.password: %v", err)
+	}
+	if err := envConfig.BindEnv("cache.db", "cache_db"); err != nil {
+		log.Printf("Failed to bind env variable cache.db: %v", err)
+	}
 
 	if err := envConfig.Unmarshal(&c); err != nil {
 		log.Fatal(fmt.Errorf("fatal error unmarshaling config file: %w ", err))

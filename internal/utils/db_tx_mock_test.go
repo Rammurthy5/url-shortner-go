@@ -2,13 +2,14 @@ package utils
 
 import (
 	"context"
+	"testing"
+
 	urls_mapping "github.com/Rammurthy5/url-shortner-go/internal/db/sqlc"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 type MockDBTX struct {
@@ -49,7 +50,7 @@ func TestFetchShortURL(t *testing.T) {
 		Return(nil, errors.New("not found"))
 
 	result = FetchShortURL(queries, url)
-	require.Equal(t, "", result)
+	require.Equal(t, "error while fetching short url", result)
 }
 
 func TestStoreShortURL(t *testing.T) {
