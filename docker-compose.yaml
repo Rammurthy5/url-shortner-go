@@ -29,6 +29,26 @@ services:
     volumes:
       - redis-data:/data
 
+  tempo:
+    image: grafana/tempo:latest
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ./tempo.yaml:/etc/tempo.yaml
+    ports:
+      - "4318:4318"  # OTLP HTTP receiver
+      - "3204:3204"  # Tempo query endpoint
+
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - ./grafana-provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - "3000:3000"
+
 volumes:
   postgres-db-volume:
   redis-data:
