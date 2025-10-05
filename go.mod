@@ -4,7 +4,7 @@ go 1.23.4
 
 require (
 	github.com/go-playground/form v3.1.4+incompatible
-	github.com/go-playground/validator/v10 v10.24.0
+	github.com/go-playground/validator/v10 v10.27.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-redis/redismock/v8 v8.11.5
 	github.com/jackc/pgx/v5 v5.7.2
